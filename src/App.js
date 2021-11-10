@@ -1,10 +1,42 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
 import Home from './components/Home';
+import About from './components/About';
+import Users from './components/Users';
+import StrictAccess from './components/StrictAccess';
 
 class App extends Component {
   render() {
+    const login = {
+      username: 'joao',
+      password: '1234',
+    }
+
     return (
-      <Home />
+      <BrowserRouter>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/about">About</Link></li>
+          <li><Link to="/users/10">Users</Link></li>
+          <li><Link to="/strict-access">Strict Access</Link></li>
+        </ul>
+        <Switch>
+          <Route
+            path="/users/:id"
+            render={(props) =>
+              <Users { ...props } greetingsMessage="Good Morning" />
+            }
+          />
+          <Route
+            path="/strict-access"
+            render={() =>
+              <StrictAccess user={ login } />
+            }
+          />
+          <Route path="/about" component={ About } />
+          <Route path="/" component={ Home } />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }
